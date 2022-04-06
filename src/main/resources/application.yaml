@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    password: '3228918i'
+    url: jdbc:mysql://localhost:3306/registration
+    username: 'root'
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+    show-sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+security:
+  jwt:
+    token:
+      secret-key: ismatSecretKey
+      expire-length: 86400000
