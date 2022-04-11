@@ -1,7 +1,6 @@
 package com.example.storageit.rest.dto;
 
 
-import com.example.storageit.persistence.entity.Storage;
 import com.example.storageit.service.OnUpdate;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -30,9 +29,9 @@ public class ProductDto {
     @NotEmpty(message = "category name cannot be empty")
     private String categoryName;
 
-    @NotNull(message = "Storage missing")
-    private StorageDto storage;
+    @NotNull(message = "Storage id missing")
+    private Long storageId;
 
     @Max(value = 25, message = "product size may not be bigger than 25 m2")
-    private double size;
+    private Double size;
 }

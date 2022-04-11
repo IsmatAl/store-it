@@ -32,7 +32,7 @@ public class AuthenticationService {
     private final JwtUtils jwtUtils;
 
 
-    public void register(RegistrationRequest request) {
+    public User register(RegistrationRequest request) {
         boolean isValidEmail = myEmailValidator.
                 test(request.getEmail());
 
@@ -42,11 +42,10 @@ public class AuthenticationService {
 
         if (request.getPrimaryContactEmail() != null) {
             BusinessProfile businessProfile = extractBusinessProfile(request);
-            businessProfileUserService.signUpUser(businessProfile);
-        } else {
-            PrivateProfile privateProfile = extractPersonProfile(request);
-            privateProfileUserService.signUpUser(privateProfile);
+            return businessProfileUserService.signUpUser(businessProfile);
         }
+        PrivateProfile privateProfile = extractPersonProfile(request);
+        return privateProfileUserService.signUpUser(privateProfile);
     }
 
     private PrivateProfile extractPersonProfile(RegistrationRequest request) {

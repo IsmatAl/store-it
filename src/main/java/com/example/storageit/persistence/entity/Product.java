@@ -1,17 +1,24 @@
 package com.example.storageit.persistence.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Audited(targetAuditMode = NOT_AUDITED)
 public class Product {
 
     @Id
@@ -31,8 +38,8 @@ public class Product {
     @Column(name = "category_name", nullable = false)
     private String categoryName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "storage_location_id")
+    @ManyToOne
+    @JoinColumn(name = "storage_id")
     @ToString.Exclude
     private Storage storage;
 

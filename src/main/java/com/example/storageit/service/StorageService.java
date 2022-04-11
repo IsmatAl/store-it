@@ -1,18 +1,14 @@
 package com.example.storageit.service;
 
 import com.example.storageit.persistence.entity.*;
-import com.example.storageit.persistence.repo.StorageHistoryRepo;
 import com.example.storageit.persistence.repo.StorageRepo;
-import com.example.storageit.persistence.repo.TaxableAmountRepo;
 import com.example.storageit.rest.exception.NoVacantPlace;
 import lombok.AllArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -24,8 +20,7 @@ public class StorageService {
             "no empty room in storage with id %d";
 
     private final StorageRepo storageRepo;
-    private final StorageHistoryRepo storageHistoryRepo;
-    private final TaxableAmountRepo taxableAmountRepo;
+
 
     public Storage getStorageById(Long storageId)
             throws EntityNotFoundException {
@@ -34,20 +29,22 @@ public class StorageService {
     }
 
 
-    public Integer getVacantPlaces(Long id)
+    public Integer getEmptyPlaces(Long id)
+            throws EntityNotFoundException {
+        return storageRepo.getEmptySlots(id);
+
+    }
+
+    private Integer getCapacity(Long id)
             throws EntityNotFoundException {
         Storage storage = getStorageById(id);
-        return storage.getCapacity() - storage.getProducts().size();
+        return storage.getCapacity();
     }
 
-    public BigDecimal getDepthFor(Long id, LocalDate startDate, LocalDate endDate) {
-        return storageHistoryRepo.getUsagePeriod(id, startDate, endDate);
+    public BigDecimal getDepthFor(Long id, Long storageId, LocalDate startDate, LocalDate endDate) {
+        return storageRepo.getUsageFeeForPeriod(id, storageId, startDate, endDate);
     }
 
-//
-//    public BigDecimal getPriceByType(StorageType storageType) {
-//        taxableAmountRepo.fin
-//    }
 
     public Storage addStorage(Storage storage) {
         if (storage.getId() == null || storageRepo.findById(storage.getId()).isEmpty())
@@ -55,12 +52,15 @@ public class StorageService {
         return storage;
     }
 
-    public void addProduct(Product product, Storage storage) {
-        int vacantPlaces = getVacantPlaces(storage.getId());
-        if (vacantPlaces == 0) {
+    public Storage move(Long oldStorageId, Long newStorageId, Integer size) {
+        if (oldStorageId.equals(newStorageId))
+            return getStorageById(oldStorageId);
+        Storage storage = getStorageById(newStorageId);
+        int capacity = getCapacity(storage.getId());
+        int emptySlots = capacity - size;
+        if (emptySlots <= 0) {
             throw new NoVacantPlace(String.format(NO_VACANT_PLACE, storage.getId()));
         }
-        storage.getProducts().add(product);
-        storageRepo.save(storage);
+        return storageRepo.save(storage);
     }
 }

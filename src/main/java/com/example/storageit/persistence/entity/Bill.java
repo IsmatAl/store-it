@@ -22,10 +22,10 @@ public class Bill {
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "bill_number", nullable = false)
+    @Column(name = "bill_number")
     private String billNum;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private BusinessProfile user;
@@ -56,12 +56,13 @@ public class Bill {
         return getClass().hashCode();
     }
 
-    public static Bill of(User user) {
+    public static Bill of(User user, BigDecimal totalAmount) {
         Bill bill = new Bill();
         bill.user = (BusinessProfile) user;
         bill.createdAt = LocalDate.now();
         LocalDate currentDate = LocalDate.now();
         bill.dueTo = LocalDate.of(currentDate.getYear(), currentDate.getMonth(), 5);
+        bill.totalAmount = totalAmount;
         return bill;
     }
 }

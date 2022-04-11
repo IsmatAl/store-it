@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.DiscriminatorFormula;
+import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +16,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorFormula("user_role")
+@Audited(targetAuditMode = NOT_AUDITED)
 public abstract class User implements UserDetails {
 
     @Id
@@ -49,7 +53,7 @@ public abstract class User implements UserDetails {
     private List<Product> products;
 
     @JoinColumn
-    @OneToMany
+    @OneToMany(cascade={CascadeType.ALL})
     private List<Bill> bills;
 
     @Column

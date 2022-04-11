@@ -17,8 +17,9 @@ public class AuthController {
 
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
-        authenticationService.register(request);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        Long id = authenticationService.register(request).getId();
+        return ResponseEntity.ok(new MessageResponse(
+                String.format("User with id %d registered successfully!", id )));
     }
 
 

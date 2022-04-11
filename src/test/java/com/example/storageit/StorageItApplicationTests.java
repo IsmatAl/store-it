@@ -1,7 +1,6 @@
 package com.example.storageit;
 
 import com.example.storageit.persistence.entity.Product;
-import com.example.storageit.persistence.repo.ProductRepo;
 import com.example.storageit.service.UserService;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -19,14 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @AllArgsConstructor
 class StorageItApplicationTests {
 
-    private final ProductRepo productRepo;
     private final UserService userService;
 
     @Test
     public void addProduct() {
-
-        Product product = Product.of("Gizmo", "23923823WLCMW48", 1900.0, "Gadget", 0.8);
-    userService.addProduct("test@example.com", product);
 
     }
 

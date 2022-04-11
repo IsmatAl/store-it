@@ -4,6 +4,7 @@ import com.example.storageit.service.UserService;
 import com.example.storageit.security.jwt.AuthEntryPointJwt;
 import com.example.storageit.security.jwt.AuthTokenFilter;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,6 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthTokenFilter authenticationJwtTokenFilter;
     private final AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

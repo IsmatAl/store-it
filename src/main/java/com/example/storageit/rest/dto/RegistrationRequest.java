@@ -1,12 +1,10 @@
 package com.example.storageit.rest.dto;
 
-import com.example.storageit.persistence.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Getter

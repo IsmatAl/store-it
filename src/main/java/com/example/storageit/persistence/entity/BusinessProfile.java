@@ -4,8 +4,10 @@ package com.example.storageit.persistence.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,11 +27,13 @@ public class BusinessProfile extends User {
                            User primaryContact, String businessName) {
 
         super(email, password, UserRole.BUSINESS, storageLimit);
-        BusinessProfile businessProfile
-                 = new BusinessProfile();
-        businessProfile.primaryContact = (PrivateProfile) primaryContact;
-        businessProfile.businessName = businessName;
+        this.primaryContact = (PrivateProfile) primaryContact;
+        this.businessName = businessName;
 
 
     }
+
+    @OneToMany(cascade={CascadeType.ALL})
+    @ToString.Exclude
+    private List<Bill> bills;
 }
