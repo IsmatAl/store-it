@@ -159,7 +159,7 @@ public class UserService<T extends User> implements UserDetailsService {
                 .findFirst()
                 .orElseThrow(() ->
                         new EntityNotFoundException(String.format(PRODUCT_NOT_FOUND_MSG, productId)));
-        productList.remove(productId);
+        productList.removeIf(x -> x.getId().equals(productId));// (productId.longValue());
         userRepository.save(user);
         return productId;
 
